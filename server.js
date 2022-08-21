@@ -1,33 +1,34 @@
-require("dotenv").config({ path: "./config.env" });
-const express = require("express");
-var cors = require("cors");
-const app = express();
-const connectDB = require("./config/db");
-const errorHandler = require("./middleware/error");
+require('dotenv').config({ path: './config.env' })
+const express = require('express')
+var cors = require('cors')
+const app = express()
+const connectDB = require('./config/db')
+const errorHandler = require('./middleware/error')
 
-connectDB();
+connectDB()
 
-app.use(cors());
-app.use(express.json());
+app.use(cors())
+app.use(express.json())
 
-app.get("/", (req, res, next) => {
-  res.send("Api running");
-});
+app.get('/', (req, res, next) => {
+  res.send('Api running')
+})
 
 // Connecting Routes
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/private", require("./routes/private"));
+app.use('/api/auth', require('./routes/auth'))
+app.use('/api/private', require('./routes/private'))
+app.use(require('./routes/mykyc'))
 
 // Error Handler Middleware
-app.use(errorHandler);
+app.use(errorHandler)
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000
 
 const server = app.listen(PORT, () =>
   console.log(`Sever running on port ${PORT}`)
-);
+)
 
-process.on("unhandledRejection", (err, promise) => {
-  console.log(`Logged Error: ${err.message}`);
-  server.close(() => process.exit(1));
-});
+process.on('unhandledRejection', (err, promise) => {
+  console.log(`Logged Error: ${err.message}`)
+  server.close(() => process.exit(1))
+})
